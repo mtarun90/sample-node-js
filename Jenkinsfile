@@ -18,8 +18,10 @@ pipeline {
 
         stage('deploy') {
             steps {
-                
-                    sh 'sudo pm2 start bin/www'
+                sh '''
+                sudo pm2 stop all
+                sudo pm2 start bin/www
+                '''
                 }
             }
         }
