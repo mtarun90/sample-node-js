@@ -1,33 +1,17 @@
-pipeline {
-    agent {
-        docker {
-            image '394abc79672f'
-        }
-    }
+node {
+    // Define the Docker image
+    def nodeImage = 'node:latest'
 
-    stages {
+    // Run the pipeline inside the Docker container
+    docker.image(394abc79672f).inside {
         stage('Build') {
-            steps {
-                script {
-                    echo 'Installing dependencies...'
-                    sh 'npm install'
-                }
-            }
+            echo 'Installing dependencies...'
+            sh 'npm install'
         }
 
         stage('Deploy') {
-            steps {
-                script {
-                    echo 'Starting application...'
-                    sh 'npm run start:dev'
-                }
-            }
-        }
-    }
-
-    post {
-        failure {
-            echo 'Pipeline failed. Notify or take corrective actions here.'
+            echo 'Starting application...'
+            sh 'npm run start:dev'
         }
     }
 }
