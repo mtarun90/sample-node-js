@@ -9,32 +9,21 @@ pipeline {
             }
         }
 
-        stage('Build and Run Docker Container') {
+        stage('Install Dependencies') {
             steps {
                 script {
-                    // Build Docker image
-                    def dockerImage = docker.build('136ca99b4b96:latest', './the-example-app.nodejs')
-
-                    // Run Docker container
-                    dockerImage.run('-p 8080:80 -d')
+                    // Install Node.js dependencies
+                    sh 'npm install'
                 }
             }
         }
 
-        stage('Deploy') {
+        stage('Build') {
             steps {
-                // Your deployment steps go here
+                script {
+                
+                    sh 'npm run build'
+                }
             }
         }
-    }
 
-    post {
-        always {
-            // Cleanup steps go here, e.g., stop and remove the container
-            script {
-                sh 'docker stop your-container-name || true'
-                sh 'docker rm your-container-name || true'
-            }
-        }
-    }
-}
