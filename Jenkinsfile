@@ -1,20 +1,33 @@
 pipeline {
-    agent any
-    stages{
-       // stage('Install PM2'){
-       //     steps{
-       //         sh 'npm install -g pm2'
-       //    }
-       // }
-        stage('Build'){
-            steps{
-                sh 'npm install'
+    agent {
+        docker {
+            image 'node:14
+        }
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    echo 'Installing dependencies...'
+                    sh 'npm install'
+                }
             }
         }
-        stage('Deploy'){
-            steps{
-                sh 'npm run start:dev'
+
+        stage('Deploy') {
+            steps {
+                script {
+                    echo 'Starting application...'
+                    sh 'npm run start:dev'
+                }
+            }
+        }
     }
-    }
+
+    post {
+        failure {
+            echo 'Pipeline failed. Notify or take corrective actions here.'
+        }
     }
 }
