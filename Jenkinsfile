@@ -1,35 +1,40 @@
 pipeline {
-    agent docker
+    agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                // Checkout source code from GitHub
+                git 'https://github.com/mtarun90/sample-node-js.git'
+            }
+        }
+
         stage('Build and Run Docker Container') {
             steps {
                 script {
-                    // Pull or build your Docker image
-                    docker.image('mtarun90/tarunrep:latest').pull()
+                    // Build Docker image
+                    def dockerImage = docker.build('136ca99b4b96:latest', './the-example-app.nodejs')
 
-                    // Run the Docker container
-                    def dockerContainer = docker.image('mtarun90/tarunrep:latest').run('-p 8080:80')
-
-                    // Execute commands inside the running container
-                    dockerContainer.inside {
-                        sh 'echo "Commands to run inside the Docker container"'
-                        sh 'ls -la'
-                        // Add any other commands you need
-                    }
+                    // Run Docker container
+                    dockerImage.run('-p 8080:80 -d')
                 }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Your deployment steps go here
             }
         }
     }
 
     post {
-        success {
-            // Notify or perform actions on successful build
-            echo 'Pipeline succeeded. Notify or perform actions here.'
-        }
-        failure {
-            // Notify or perform actions on failed build
-            echo 'Pipeline failed. Notify or perform actions here.'
+        always {
+            // Cleanup steps go here, e.g., stop and remove the container
+            script {
+                sh 'docker stop your-container-name || true'
+                sh 'docker rm your-container-name || true'
+            }
         }
     }
 }
