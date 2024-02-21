@@ -1,6 +1,6 @@
 node {
     // Define the Docker image
-    def nodeImage = '394abc79672f'
+    def nodeImage = 'the-example-app.nodejs'
 
     // Run the pipeline inside the Docker container
     docker.image(the-example-app.nodejs).inside {
