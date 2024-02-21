@@ -2,28 +2,26 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('install pm2') {
             steps {
-                // Checkout source code from GitHub
-                git 'https://github.com/mtarun90/sample-node-js.git'
+                sh 'sudo npm install -g pm2'
             }
         }
 
-        stage('Install Dependencies') {
+        stage('build') {
             steps {
-                script {
-                    // Install Node.js dependencies
-                    sh 'npm install'
+                sh sudo 'npm install'
+           
                 }
             }
-        }
+        
 
-        stage('Build') {
+        stage('deploy') {
             steps {
-                script {
                 
-                    sh 'npm run build'
+                    sh 'sudo pm2 start bin/www'
                 }
             }
         }
+}
 
