@@ -1,8 +1,8 @@
-FROM node:9
+FROM node:14
 
 WORKDIR /app
 
-RUN npm install -g contentful-cli
+
 
 COPY package.json .
 RUN npm install
