@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image '5F349'
+            image '394abc79672f'
         }
     }
 
