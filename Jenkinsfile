@@ -1,6 +1,6 @@
 node {
     // Define the Docker image
-    def nodeImage = 'node:latest'
+    def nodeImage = '394abc79672f'
 
     // Run the pipeline inside the Docker container
     docker.image(394abc79672f).inside {
