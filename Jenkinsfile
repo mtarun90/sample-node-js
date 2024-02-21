@@ -1,17 +1,35 @@
-node {
-    // Define the Docker image
-    def nodeImage = 'the-example-app.nodejs'
+pipeline {
+    agent any
 
-    // Run the pipeline inside the Docker container
-    docker.image(the-example-app.nodejs).inside {
-        stage('Build') {
-            echo 'Installing dependencies...'
-            sh 'npm install'
+    stages {
+        stage('Build and Run Docker Container') {
+            steps {
+                script {
+                    // Pull or build your Docker image
+                    docker.image('mtarun90/tarunrep:latest').pull()
+
+                    // Run the Docker container
+                    def dockerContainer = docker.image('mtarun90/tarunrep:latest').run('-p 8080:80')
+
+                    // Execute commands inside the running container
+                    dockerContainer.inside {
+                        sh 'echo "Commands to run inside the Docker container"'
+                        sh 'ls -la'
+                        // Add any other commands you need
+                    }
+                }
+            }
         }
+    }
 
-        stage('Deploy') {
-            echo 'Starting application...'
-            sh 'npm run start:dev'
+    post {
+        success {
+            // Notify or perform actions on successful build
+            echo 'Pipeline succeeded. Notify or perform actions here.'
+        }
+        failure {
+            // Notify or perform actions on failed build
+            echo 'Pipeline failed. Notify or perform actions here.'
         }
     }
 }
