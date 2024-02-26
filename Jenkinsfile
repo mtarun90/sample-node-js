@@ -1,29 +1,41 @@
 pipeline {
     agent any
-
+    
     stages {
-        stage('install pm2') {
+        stage('Checkout') {
             steps {
-                sh 'sudo npm install -g pm2'
+            
+                checkout scm
             }
         }
-
-        stage('build') {
-            steps {
-                sh sudo 'npm install'
-           
-                }
-            }
         
-
-        stage('deploy') {
+        stage('Build') {
             steps {
-                sh '''
-                sudo pm2 stop all
-                sudo pm2 start bin/www
-                '''
-                }
+                // Add your build steps here
+                echo 'Performing build...'
             }
         }
+        
+      
+        
+        stage('Deploy') {
+            steps {
+                // Add your deployment steps here
+                echo 'Deploying...'
+            }
+        }
+    }
+    
+    post {
+        success {
+            // Actions to be performed on successful execution
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            // Actions to be performed on failure
+            echo 'Pipeline failed!'
+        }
+    }
 }
+
 
