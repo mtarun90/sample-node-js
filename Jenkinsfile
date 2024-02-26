@@ -11,7 +11,7 @@ pipeline {
         
         stage('Build Docker Images') {
             steps {
-              sh 'sudo docker build -t tarun:v1'
+              sh 'sudo docker build -t tarun:v1 .'
                 echo 'Performing build...'
             }
         }
