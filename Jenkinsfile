@@ -1,4 +1,4 @@
-pipeline {
+Impipeline {
     agent any
     
     stages {
@@ -9,9 +9,9 @@ pipeline {
             }
         }
         
-        stage('Build') {
+        stage('Build Docker Images') {
             steps {
-                // Add your build steps here
+                docker build -t the-example-app.nodejs .
                 echo 'Performing build...'
             }
         }
@@ -20,7 +20,7 @@ pipeline {
         
         stage('Deploy') {
             steps {
-                // Add your deployment steps here
+                docker run -p 3000:3000 -d the-example-app.nodejs
                 echo 'Deploying...'
             }
         }
