@@ -11,7 +11,7 @@ pipeline {
         
         stage('Build Docker Images') {
             steps {
-              sh 'sudo docker build -t the-example-app.nodejs:latest'
+              sh 'sudo docker build -t tarun:v1'
                 echo 'Performing build...'
             }
         }
@@ -20,7 +20,7 @@ pipeline {
         
         stage('Deploy') {
             steps {
-               sh 'sudo docker run -p 3000:3000 -d the-example-app.nodejs:latest'
+               sh 'sudo docker run -p 3000:3000 -d tarun:v1'
                 echo 'Deploying...'
             }
         }
